@@ -1,0 +1,5 @@
+# @package _group_
+name: "pn"
+normal_channel: False
+k: 40
+mat_diff_loss_scale: 0.001

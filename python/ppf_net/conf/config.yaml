@@ -1,0 +1,14 @@
+defaults:
+  - dataset: rps
+  - model: pn
+train:
+  batch_size: 4
+  num_workers: 8
+  val_shuffle: False # Whether to shuffle the valid and test dataloader
+  n_epochs: 100
+  gpus: '0' # This should be a string
+debug: False
+project: "vlr_proj"
+exp_suffix: "exp"
+exp_name: ???
+weights_path: None

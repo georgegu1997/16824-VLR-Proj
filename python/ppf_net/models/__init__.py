@@ -1,6 +1,11 @@
+from .pointnet import PointNetCls
+
 def getModel(cfg):
 
-    ModelClass = None
+    if cfg.model.name == "pn":
+        ModelClass = PointNetCls
+    else:
+        raise Exception("Unknown cfg.model.name =", cfg.model.name)
 
     if cfg.weights_path is None:
         model = ModelClass(cfg)

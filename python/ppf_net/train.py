@@ -38,6 +38,5 @@ def main(config: DictConfig) -> None:
 
     trainer.fit(model, train_loader, valid_loader)
 
-
 if __name__ == "__main__":
     main()
