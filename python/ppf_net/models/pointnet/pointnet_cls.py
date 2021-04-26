@@ -48,11 +48,11 @@ class PointNetCls(pl.LightningModule):
             eps=1e-08,
             weight_decay = self.config.weight_decay,
         )
-        # scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer, milestones=[20, 40], gamma=0.1)
-        scheduler = {
-            'scheduler': torch.optim.lr_scheduler.StepLR(optimizer, step_size=self.config.lr_decay_step, gamma=self.config.lr_decay_rate),
-            'interval': 'step'
-        }
+        scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer, milestones=[30, 60], gamma=0.1)
+        # scheduler = {
+        #     'scheduler': torch.optim.lr_scheduler.StepLR(optimizer, step_size=self.config.lr_decay_step, gamma=self.config.lr_decay_rate),
+        #     'interval': 'step'
+        # }
 
         return [optimizer], [scheduler]
 

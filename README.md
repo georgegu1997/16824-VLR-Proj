@@ -21,4 +21,4 @@ pip install -e .
 ## Run the experiment
 
 * Navigate to `python/ppf_net/` folder
-* Simple run `python train.py`
+* Run `python train.py`
