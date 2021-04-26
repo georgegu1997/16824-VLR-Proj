@@ -1,2 +1,11 @@
 # @package _group_
 name: "rps"
+data_root: "/home/qiaog/src/16824proj/data/RobustPointSet"
+train_tasks: 
+  - "train_original.npy"
+test_tasks:
+  - "test_original.npy"
+train_labels: ???
+test_labels: ???
+num_point: 2048
+normal: False

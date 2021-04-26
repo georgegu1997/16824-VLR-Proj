@@ -1,5 +1,15 @@
 # @package _group_
 name: "pn"
-normal_channel: False
 k: 40
+normal_channel: ${dataset.normal}
 mat_diff_loss_scale: 0.001
+learning_rate: 0.001
+weight_decay: 1e-4
+lr_decay_rate: 0.5
+lr_decay_step: 100
+# arguments for checkpoint callback
+checkpoint_name: "{epoch:03d}-{train_inst_acc_epoch:.3f}-{valid_inst_acc:.3f}-{valid_cls_acc:.3f}"
+monitor: "valid_cls_acc"
+monitor_mode: "max"
+max_epochs: 100
+save_top_k: 5
