@@ -22,3 +22,4 @@ pip install -e .
 
 * Navigate to `python/ppf_net/` folder
 * Run `python train.py`
+* Wait for results
