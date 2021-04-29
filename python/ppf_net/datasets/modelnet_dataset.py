@@ -12,15 +12,31 @@ import torch
 import torch.utils.data as data
 import tqdm
 
+from torchvision import transforms
+
+from .utils import PointcloudToTensor, PointcloudRotatePerturbation
+
 
 def getDataloaders(cfg):
+    train_transform = PointcloudToTensor()
+    
+    if cfg.dataset.valid_rot:
+        test_transform = transforms.Compose(
+            [
+                PointcloudToTensor(),
+                PointcloudRotatePerturbation(),
+            ]
+        )
+    else:
+        test_transform = None
+
     train_dataset = ModelNet40Cls(
         cfg.dataset.data_root, cfg.dataset.num_points,
-        train=True
+        train=True, transforms=train_transform
     )
     test_dataset = ModelNet40Cls(
         cfg.dataset.data_root, cfg.dataset.num_points,
-        train=False
+        train=False, transforms=test_transform
     )
 
     train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=cfg.train.batch_size, shuffle=True, num_workers=0)
@@ -30,7 +46,6 @@ def getDataloaders(cfg):
 
     return train_loader, valid_loader, test_loader
 
-
 def pc_normalize(pc):
     l = pc.shape[0]
     centroid = np.mean(pc, axis=0)
@@ -38,7 +53,6 @@ def pc_normalize(pc):
     m = np.max(np.sqrt(np.sum(pc ** 2, axis=1)))
     pc = pc / m
     return pc
-
 
 class ModelNet40Cls(data.Dataset):
     def __init__(self, data_root, num_points, transforms=None, train=True, download=True):
