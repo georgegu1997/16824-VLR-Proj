@@ -40,3 +40,4 @@ python train.py dataset=rps dataset.test_tasks=["test_rotation.npy"] exp_suffix=
 python train.py dataset=modelnet dataset.normal=False 
 
 python train.py dataset=modelnet dataset.normal=True exp_suffix="normal"
+
