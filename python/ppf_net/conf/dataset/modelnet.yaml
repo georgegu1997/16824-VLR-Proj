@@ -1,0 +1,5 @@
+# @package _group_
+name: 'modelnet'
+data_root: "/home/qiaog/src/16824proj/data"
+num_points: 2048
+normal: True
