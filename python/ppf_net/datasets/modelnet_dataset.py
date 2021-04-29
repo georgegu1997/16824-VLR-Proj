@@ -20,13 +20,12 @@ def getDataloaders(cfg):
     train_transform = PointcloudToTensor()
     
     if cfg.dataset.valid_rot:
-        # test_transform = transforms.Compose(
-        #     [
-        #         PointcloudToTensor(),
-        #         PointcloudRotateRandom(),
-        #     ]
-        # )
-        test_transform = None
+        test_transform = transforms.Compose(
+            [
+                PointcloudToTensor(),
+                PointcloudRotateRandom(),
+            ]
+        )
     else:
         test_transform = None
 

@@ -4,8 +4,6 @@ import torch.utils.data
 import torch.nn.functional as F
 from .pointnet import PointNetEncoder, feature_transform_reguliarzer
 
-from ppf_net.datasets.utils import rotate_point_cloud, rotate_point_cloud_with_normal
-
 import pytorch_lightning as pl
 
 class PointNetCls(pl.LightningModule):
@@ -86,9 +84,6 @@ class PointNetCls(pl.LightningModule):
 
     def validation_step(self, batch, batch_idx):
         points, target = batch
-        
-        points = rotate_point_cloud(points)
-        
         points = points.transpose(2, 1) # (B, n_feats, n_points)
         target = target.squeeze() # (B, )
 
