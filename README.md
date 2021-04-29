@@ -26,3 +26,17 @@ The pre-processed ModelNet40 dataset are used, containing sampled point cloud wi
 
 * Navigate to `python/ppf_net/` folder
 * Run `python train.py`
+
+### Reproduce robust point net result
+
+Train only on the original data and test on rotation-perturbed data
+```
+python train.py dataset=rps dataset.test_tasks=["test_rotation.npy"] exp_suffix="testrot"
+```
+
+### Train with processed ModelNet data
+
+```
+python train.py dataset=modelnet dataset.normal=False 
+
+python train.py dataset=modelnet dataset.normal=True exp_suffix="normal"

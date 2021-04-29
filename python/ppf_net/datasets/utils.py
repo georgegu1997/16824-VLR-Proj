@@ -43,6 +43,40 @@ class PointcloudScale(object):
         points[:, 0:3] *= scaler
         return points
 
+def random_three_vector():
+    """
+    Generates a random 3D unit vector (direction) with a uniform spherical distribution
+    Algo from http://stackoverflow.com/questions/5408276/python-uniform-spherical-distribution
+    :return:
+    """
+    phi = np.random.uniform(0,np.pi*2)
+    costheta = np.random.uniform(-1,1)
+
+    theta = np.arccos( costheta )
+    x = np.sin( theta) * np.cos( phi )
+    y = np.sin( theta) * np.sin( phi )
+    z = np.cos( theta )
+    return (x,y,z)
+
+class PointcloudRotateRandom(object):
+    def __init__(self):
+        pass
+
+    def __call__(self, points):
+        axis = np.asarray(random_three_vector())
+        rotation_angle = np.random.uniform() * 2 * np.pi
+        rotation_matrix = angle_axis(rotation_angle, axis)
+
+        normals = points.size(1) > 3
+        if not normals:
+            return torch.matmul(points, rotation_matrix.t())
+        else:
+            pc_xyz = points[:, 0:3]
+            pc_normals = points[:, 3:]
+            points[:, 0:3] = torch.matmul(pc_xyz, rotation_matrix.t())
+            points[:, 3:] = torch.matmul(pc_normals, rotation_matrix.t())
+
+            return points
 
 class PointcloudRotate(object):
     def __init__(self, axis=np.array([0.0, 1.0, 0.0])):

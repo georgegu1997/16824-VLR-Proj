@@ -66,6 +66,6 @@ def load_data(root, tasks, labels):
         
         all_data.append(data)
         all_label.append(label)
-    all_data = np.concatenate(all_data, axis=0)
+    all_data = np.concatenate(all_data, axis=0).astype(np.float32)
     all_label = np.concatenate(all_label, axis=0)
     return all_data, all_label

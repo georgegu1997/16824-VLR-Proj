@@ -1,4 +1,3 @@
-  
 import os
 import os.path as osp
 import shlex
@@ -14,7 +13,7 @@ import tqdm
 
 from torchvision import transforms
 
-from .utils import PointcloudToTensor, PointcloudRotatePerturbation
+from .utils import PointcloudToTensor, PointcloudRotateRandom
 
 
 def getDataloaders(cfg):
@@ -24,7 +23,7 @@ def getDataloaders(cfg):
         test_transform = transforms.Compose(
             [
                 PointcloudToTensor(),
-                PointcloudRotatePerturbation(),
+                PointcloudRotateRandom(),
             ]
         )
     else:
@@ -32,11 +31,11 @@ def getDataloaders(cfg):
 
     train_dataset = ModelNet40Cls(
         cfg.dataset.data_root, cfg.dataset.num_points,
-        train=True, transforms=train_transform
+        train=True, transforms=train_transform, normal=cfg.dataset.normal,
     )
     test_dataset = ModelNet40Cls(
         cfg.dataset.data_root, cfg.dataset.num_points,
-        train=False, transforms=test_transform
+        train=False, transforms=test_transform, normal=cfg.dataset.normal,
     )
 
     train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=cfg.train.batch_size, shuffle=True, num_workers=0)
@@ -55,11 +54,12 @@ def pc_normalize(pc):
     return pc
 
 class ModelNet40Cls(data.Dataset):
-    def __init__(self, data_root, num_points, transforms=None, train=True, download=True):
+    def __init__(self, data_root, num_points, transforms=None, train=True, download=True, normal=True):
         super().__init__()
 
         self.transforms = transforms
         self.data_root = data_root
+        self.normal = normal
 
         self.set_num_points(num_points)
         self._cache = os.path.join(self.data_root, "modelnet40_normal_resampled_cache")
@@ -163,6 +163,9 @@ class ModelNet40Cls(data.Dataset):
 
         if self.transforms is not None:
             point_set = self.transforms(point_set)
+
+        if not self.normal:
+            point_set = point_set[:, 0:3]
 
         return point_set, ele["lbl"]
 
