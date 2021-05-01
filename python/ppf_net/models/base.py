@@ -5,15 +5,27 @@ import torch.nn.functional as F
 
 import pytorch_lightning as pl
 
+from ppf_net.utils.ppf import generate_ppf
+
 class BaseModel(pl.LightningModule):
     '''
     Abstract Base Class for point cloud classification models
     '''
-    def __init__(self):
+    def __init__(self, config):
         '''
-        In the __init__() function of the child class, self.config must be set
+        Handle PPF related stuff
         '''
         super().__init__()
+
+        self.config = config.model
+        self.ppf_mode = self.config.ppf_mode
+        if self.ppf_mode is not None:
+            self.input_channel = 4
+        else:
+            if self.config.normal_channel:
+                self.input_channel = 6
+            else:
+                self.input_channel = 3
 
     def forward(self, x):
         raise NotImplementedError
@@ -38,6 +50,11 @@ class BaseModel(pl.LightningModule):
         target = batch['label']
         target = target.squeeze() # (B, )
 
+        # Convert the input point+normal to PPF here
+        if self.ppf_mode is not None:
+            batch['point_original'] = batch['point']
+            batch['point'] = generate_ppf(batch['point'], self.ppf_mode)
+    
         out = self(batch) 
 
         loss = out['loss']
@@ -58,6 +75,11 @@ class BaseModel(pl.LightningModule):
         target = batch['label']
         target = target.squeeze() # (B, )
 
+        # Convert the input point+normal to PPF here
+        if self.ppf_mode is not None:
+            batch['point_original'] = batch['point']
+            batch['point'] = generate_ppf(batch['point'], self.ppf_mode)
+        
         out = self(batch) 
 
         loss = out['loss']

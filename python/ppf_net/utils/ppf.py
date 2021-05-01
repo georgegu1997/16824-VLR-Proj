@@ -11,14 +11,15 @@ def generate_ppf(points, reference='random'):
     if reference == 'random':
         idx = random.choices(list(range(N)), k=B)
         target = torch.unsqueeze(points[torch.arange(B), idx], dim=1)  # (B, 1, 6)
-    if reference == 'mean':
+    elif reference == 'mean':
         mean_point = torch.sum(points, dim=1, keepdim=True)[:, :, :3]
         dist = torch.cdist(mean_point, points[:, :, :3]).squeeze()
         idx = torch.argmin(dist, dim=1)
         target = torch.unsqueeze(points[torch.arange(B), idx], dim=1)  # (B, 1, 6)
+    else:
+        raise Exception("Unknown PPF compute mode:", reference)
     return compute_ppf(target, points)
     
-
 def compute_ppf(target, points):
     B, N = points.size(0), points.size(1)
 

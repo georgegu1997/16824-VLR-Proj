@@ -10,15 +10,11 @@ from ppf_net.models.base import BaseModel
 
 class PointNetCls(BaseModel):
     def __init__(self, config):
-        super().__init__()
+        super().__init__(config)
 
         self.config = config.model
 
-        if self.config.normal_channel:
-            channel = 6
-        else:
-            channel = 3
-        self.feat = PointNetEncoder(global_feat=True, feature_transform=True, channel=channel)
+        self.feat = PointNetEncoder(global_feat=True, feature_transform=True, channel=self.input_channel)
         self.fc1 = nn.Linear(1024, 512)
         self.fc2 = nn.Linear(512, 256)
         self.fc3 = nn.Linear(256, self.config.k)
