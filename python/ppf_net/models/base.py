@@ -2,7 +2,6 @@ import numpy as np
 import torch.nn as nn
 import torch.utils.data
 import torch.nn.functional as F
-from .pointnet import PointNetEncoder, feature_transform_reguliarzer
 
 import pytorch_lightning as pl
 

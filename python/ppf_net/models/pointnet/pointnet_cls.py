@@ -1,4 +1,3 @@
-from lmdb.cffi import preload
 import numpy as np
 import torch.nn as nn
 import torch.utils.data
@@ -35,7 +34,7 @@ class PointNetCls(BaseModel):
         points = points.transpose(2, 1) # (B, n_feats, n_points)
         target = target.squeeze() # (B, )
 
-        x, trans, trans_feat = self.feat(x)
+        x, trans, trans_feat = self.feat(points)
         x = F.relu(self.bn1(self.fc1(x)))
         x = F.relu(self.bn2(self.dropout(self.fc2(x))))
         pred_logits = self.fc3(x)
