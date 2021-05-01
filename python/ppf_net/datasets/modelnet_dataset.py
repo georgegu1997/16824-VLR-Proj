@@ -167,7 +167,12 @@ class ModelNet40Cls(data.Dataset):
         if not self.normal:
             point_set = point_set[:, 0:3]
 
-        return point_set, ele["lbl"]
+        out = {
+            "point": point_set, # (B, N, C)
+            "label": ele['lbl'], # (B, 1)
+        }
+
+        return out
 
     def __len__(self):
         return self._len

@@ -2,23 +2,29 @@ import random
 import torch
 
 
-def generate_ppf(points, reference='random'):
+def generate_ppf(points, ppf_mode='random'):
     '''
         points: (batch_size, num_points, 6)
     '''
     B, N = points.size(0), points.size(1)
 
-    if reference == 'random':
+    if ppf_mode == 'random':
         idx = random.choices(list(range(N)), k=B)
         target = torch.unsqueeze(points[torch.arange(B), idx], dim=1)  # (B, 1, 6)
-    if reference == 'mean':
+    elif ppf_mode == 'mean':
         mean_point = torch.sum(points, dim=1, keepdim=True)[:, :, :3]
         dist = torch.cdist(mean_point, points[:, :, :3]).squeeze()
         idx = torch.argmin(dist, dim=1)
         target = torch.unsqueeze(points[torch.arange(B), idx], dim=1)  # (B, 1, 6)
+    elif ppf_mode == "far":
+        mean_point = torch.sum(points, dim=1, keepdim=True)[:, :, :3]
+        dist = torch.cdist(mean_point, points[:, :, :3]).squeeze()
+        idx = torch.argmax(dist, dim=1)
+        target = torch.unsqueeze(points[torch.arange(B), idx], dim=1)  # (B, 1, 6)
+    else:
+        raise Exception("Unknown PPF compute mode:", ppf_mode)
     return compute_ppf(target, points)
     
-
 def compute_ppf(target, points):
     B, N = points.size(0), points.size(1)
 

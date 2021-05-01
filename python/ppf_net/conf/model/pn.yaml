@@ -1,7 +1,10 @@
 # @package _group_
 name: "pn"
+# model related
 k: 40
 normal_channel: ${dataset.normal}
+ppf_mode: None # None means not computing PPF
+# loss and optimizer related
 mat_diff_loss_scale: 0.001
 learning_rate: 0.001
 weight_decay: 1e-4
