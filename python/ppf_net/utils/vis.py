@@ -2,6 +2,7 @@ import numpy as np
 import plotly.colors as pc
 import plotly.graph_objects as go
 
+
 def seg_3d_figure(
     data: np.ndarray, labels: np.ndarray, labelmap=None, sizes=None, fig=None
 ):
