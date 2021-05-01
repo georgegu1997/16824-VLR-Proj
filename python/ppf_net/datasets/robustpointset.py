@@ -1,5 +1,6 @@
 import os
 import numpy as np
+from ppf_net.models.pointnet import pointnet_cls
 import torch
 from torch.utils.data import Dataset
 
@@ -52,7 +53,12 @@ class ModelNetDataLoader(Dataset):
         if self.partition == 'train':
             np.random.shuffle(pointcloud)
 
-        return pointcloud, label
+        out = {
+            'point': pointcloud, 
+            "label": label
+        }
+
+        return out
 
     def __getitem__(self, index):
         return self._get_item(index)
