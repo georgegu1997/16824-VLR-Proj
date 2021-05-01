@@ -25,7 +25,7 @@ The pre-processed ModelNet40 dataset are used, containing sampled point cloud wi
 ## Run the experiment
 
 * Navigate to `python/ppf_net/` folder
-* Run `python train.py`
+* Run the following code repectively
 
 ### Reproduce robust point net result
 
@@ -38,6 +38,14 @@ python train.py dataset=rps dataset.test_tasks=["test_rotation.npy"] exp_suffix=
 
 ```
 python train.py dataset=modelnet dataset.normal=False 
-
 python train.py dataset=modelnet dataset.normal=True exp_suffix="normal"
+```
 
+### Train with computed point pair features with PointNet
+
+```
+# Different sampling strategy of sampling the PPF reference points
+python train.py dataset=modelnet dataset.normal=True model.ppf_mode=random exp_suffix=ppfrandom
+python train.py dataset=modelnet dataset.normal=True model.ppf_mode=mean exp_suffix=ppfmean
+python train.py dataset=modelnet dataset.normal=True model.ppf_mode=far exp_suffix=ppffar
+```
