@@ -24,11 +24,11 @@ class PointNetCls(BaseModel):
         self.relu = nn.ReLU()
 
     def forward(self, data):
-        points = data['point'] # (B, n_points, n_feats)
-        target = data['label'] # (B, 1)
+        points = data['point']  # (B, n_points, n_feats)
+        target = data['label']  # (B, 1)
 
-        points = points.transpose(2, 1) # (B, n_feats, n_points)
-        target = target.squeeze() # (B, )
+        points = points.transpose(2, 1)  # (B, n_feats, n_points)
+        target = target.squeeze()  # (B, )
 
         x, trans, trans_feat = self.feat(points)
         x = F.relu(self.bn1(self.fc1(x)))
