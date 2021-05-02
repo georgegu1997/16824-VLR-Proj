@@ -94,8 +94,8 @@ class BaseModel(pl.LightningModule):
         self.log("valid_inst_acc", valid_acc, logger=True, on_step=False, on_epoch=True)
 
         out = {
-            "gt_class": target,
-            "pred_class": pred_class
+            "gt_class": target.cpu(),
+            "pred_class": pred_class.cpu()
         }
 
         return out

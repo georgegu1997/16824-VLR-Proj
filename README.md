@@ -49,3 +49,12 @@ python train.py dataset=modelnet dataset.normal=True model.ppf_mode=random exp_s
 python train.py dataset=modelnet dataset.normal=True model.ppf_mode=mean exp_suffix=ppfmean
 python train.py dataset=modelnet dataset.normal=True model.ppf_mode=far exp_suffix=ppffar
 ```
+
+### Train PointNet++
+
+```
+python train.py model=pn2 dataset=modelnet dataset.normal=True exp_suffix=normal
+python train.py model=pn2 dataset=modelnet dataset.normal=True model.ppf_mode=mean exp_suffix=ppfmean
+# Compute the PPF at the first abstration layer
+python train.py model=pn2 dataset=modelnet dataset.normal=True model.ppf_first=True exp_suffix=ppf_first
+```
