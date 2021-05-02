@@ -152,7 +152,7 @@ def sample_and_group(npoint, radius, nsample, xyz, points, returnfps=False, ppf=
         return new_xyz, new_points
 
 
-def sample_and_group_all(xyz, points):
+def sample_and_group_all(xyz, points, ppf=False):
     """
     Input:
         xyz: input points position data, [B, N, 3]
