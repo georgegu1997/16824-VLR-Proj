@@ -1,11 +1,11 @@
 # @package _group_
-name: "pn"
+name: "pn2"
 # model related
 k: 40
 normal_channel: ${dataset.normal}
 ppf_mode: null  # null means not computing PPF
+ppf_all: True  # compute PPF on all SetAbstraction layers
 # loss and optimizer related
-mat_diff_loss_scale: 0.001
 learning_rate: 0.001
 weight_decay: 1e-4
 lr_decay_rate: 0.5
