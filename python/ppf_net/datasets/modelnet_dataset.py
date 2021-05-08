@@ -21,7 +21,8 @@ def getDataloaders(cfg):
         train_transform = transforms.Compose(
             [
                 PointcloudToTensor(),
-                PointcloudRotate(axis=np.array([1, 0, 0])),
+                # PointcloudRotate(axis=np.array([1, 0, 0])),
+                PointcloudRotateRandom(),
                 PointcloudScale(),
                 PointcloudTranslate(),
                 PointcloudJitter(),
@@ -38,7 +39,7 @@ def getDataloaders(cfg):
             ]
         )
     else:
-        train_transform = PointcloudToTensor()
+        test_transform = PointcloudToTensor()
 
     train_dataset = ModelNet40Cls(
         cfg.dataset.data_root, cfg.dataset.num_points,
@@ -49,8 +50,8 @@ def getDataloaders(cfg):
         train=False, transforms=test_transform, normal=cfg.dataset.normal,
     )
 
-    train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=cfg.train.batch_size, shuffle=True, num_workers=0)
-    valid_loader = torch.utils.data.DataLoader(test_dataset, batch_size=cfg.train.batch_size, shuffle=False, num_workers=0)
+    train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=cfg.train.batch_size, shuffle=True, num_workers=cfg.train.num_workers)
+    valid_loader = torch.utils.data.DataLoader(test_dataset, batch_size=cfg.train.batch_size, shuffle=False, num_workers=cfg.train.num_workers)
 
     test_loader = None
 

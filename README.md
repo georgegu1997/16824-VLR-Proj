@@ -63,7 +63,7 @@ python train.py model=pn2 dataset=modelnet dataset.normal=True model.ppf_first=T
 
 ```
 python train.py model=pn dataset=modelnet dataset.normal=True dataset.train_aug=True dataset.valid_rot=False exp_suffix=trainaug
-python train.py model=pn dataset=modelnet dataset.normal=True dataset.train_aug=True dataset.valid_rot=True exp_suffix=trainaug_validrot
+CUDA_VISIBLE_DEVICES=1 python train.py model=pn dataset=modelnet dataset.normal=True dataset.train_aug=True dataset.valid_rot=True exp_suffix=trainaug_validrot
 python train.py model=pn2 dataset=modelnet dataset.normal=True dataset.train_aug=True dataset.valid_rot=False exp_suffix=trainaug
-python train.py model=pn2 dataset=modelnet dataset.normal=True dataset.train_aug=True dataset.valid_rot=True exp_suffix=trainaug_validrot
+CUDA_VISIBLE_DEVICES=1 python train.py model=pn2 dataset=modelnet dataset.normal=True dataset.train_aug=True dataset.valid_rot=True exp_suffix=trainaug_validrot
 ```

@@ -15,6 +15,8 @@ class PointNet2Cls(BaseModel):
         if self.config.ppf_first:
             # Whether to compute PPF at different layers
             ppf1, ppf2, ppf3 = True, False, False
+        else:
+            ppf1, ppf2, ppf3 = False, False, False
             
         self.sa1 = PointNetSetAbstraction(npoint=512, radius=0.2, nsample=32, in_channel=in_channel, mlp=[64, 64, 128], group_all=False, ppf=ppf1)
         self.sa2 = PointNetSetAbstraction(npoint=128, radius=0.4, nsample=64, in_channel=128 + 3, mlp=[128, 128, 256], group_all=False, ppf=ppf2)
