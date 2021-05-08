@@ -13,11 +13,22 @@ import tqdm
 
 from torchvision import transforms
 
-from .utils import PointcloudToTensor, PointcloudRotateRandom
+from .utils import PointcloudToTensor, PointcloudRotateRandom, PointcloudRotate, PointcloudScale, PointcloudTranslate, PointcloudJitter
 
 
 def getDataloaders(cfg):
-    train_transform = PointcloudToTensor()
+    if cfg.dataset.train_aug:
+        train_transform = transforms.Compose(
+            [
+                PointcloudToTensor(),
+                PointcloudRotate(axis=np.array([1, 0, 0])),
+                PointcloudScale(),
+                PointcloudTranslate(),
+                PointcloudJitter(),
+            ]
+        )
+    else:
+        train_transform = PointcloudToTensor()
     
     if cfg.dataset.valid_rot:
         test_transform = transforms.Compose(
@@ -27,7 +38,7 @@ def getDataloaders(cfg):
             ]
         )
     else:
-        test_transform = None
+        train_transform = PointcloudToTensor()
 
     train_dataset = ModelNet40Cls(
         cfg.dataset.data_root, cfg.dataset.num_points,
