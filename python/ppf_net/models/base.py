@@ -38,7 +38,7 @@ class BaseModel(pl.LightningModule):
             eps=1e-08,
             weight_decay = self.config.weight_decay,
         )
-        scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer, milestones=[30, 60], gamma=0.1)
+        scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer, milestones=[50, 80], gamma=0.1)
         return [optimizer], [scheduler]
 
     def training_step(self, batch, batch_idx):

@@ -61,9 +61,18 @@ python train.py model=pn2 dataset=modelnet dataset.normal=True model.ppf_first=T
 
 # Train with training data augmentation
 
+Not using PPF
 ```
 python train.py model=pn dataset=modelnet dataset.normal=True dataset.train_aug=True dataset.valid_rot=False exp_suffix=trainaug
 CUDA_VISIBLE_DEVICES=1 python train.py model=pn dataset=modelnet dataset.normal=True dataset.train_aug=True dataset.valid_rot=True exp_suffix=trainaug_validrot
 python train.py model=pn2 dataset=modelnet dataset.normal=True dataset.train_aug=True dataset.valid_rot=False exp_suffix=trainaug
 CUDA_VISIBLE_DEVICES=1 python train.py model=pn2 dataset=modelnet dataset.normal=True dataset.train_aug=True dataset.valid_rot=True exp_suffix=trainaug_validrot
+```
+
+Using PPF
+```
+python train.py model=pn dataset=modelnet dataset.normal=True dataset.train_aug=True dataset.valid_rot=False model.ppf_mode=mean exp_suffix=ppfmean_trainaug
+CUDA_VISIBLE_DEVICES=1 python train.py model=pn dataset=modelnet dataset.normal=True dataset.train_aug=True dataset.valid_rot=True model.ppf_mode=mean exp_suffix=ppfmean_trainaug_validrot
+python train.py model=pn2 dataset=modelnet dataset.normal=True dataset.train_aug=True dataset.valid_rot=False model.ppf_first=True exp_suffix=ppf_first_trainaug
+CUDA_VISIBLE_DEVICES=1 python train.py model=pn2 dataset=modelnet dataset.normal=True dataset.train_aug=True dataset.valid_rot=True model.ppf_first=True exp_suffix=ppf_first_trainaug_validrot
 ```
