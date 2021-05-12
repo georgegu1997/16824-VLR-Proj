@@ -2,11 +2,11 @@ import numpy as np
 import torch.nn as nn
 import torch.utils.data
 import torch.nn.functional as F
-from .pointnet import PointNetEncoder, feature_transform_reguliarzer
-
 import pytorch_lightning as pl
 
+from .pointnet import PointNetEncoder, feature_transform_reguliarzer
 from ppf_net.models.base import BaseModel
+
 
 class PointNetCls(BaseModel):
     def __init__(self, config):

@@ -1,13 +1,14 @@
 # @package _group_
-name: "pn2"
+name: "dgcnn"
 # model related
 k: 40
+dropout: 0.5
 normal_channel: ${dataset.normal}
 ppf_mode: null  # null means not computing PPF
-ppf_first: False  # compute PPF at the first SetAbstraction layers
 # loss and optimizer related
-use_sgd: False
+use_sgd: True
 learning_rate: 0.001
+momentum: 0.9
 weight_decay: 1e-4
 lr_decay_rate: 0.5
 lr_decay_step: 100
@@ -15,5 +16,5 @@ lr_decay_step: 100
 checkpoint_name: "{epoch:03d}-{train_inst_acc_epoch:.3f}-{valid_inst_acc:.3f}-{valid_cls_acc:.3f}"
 monitor: "valid_cls_acc"
 monitor_mode: "max"
-max_epochs: 300
+max_epochs: 250
 save_top_k: 5
