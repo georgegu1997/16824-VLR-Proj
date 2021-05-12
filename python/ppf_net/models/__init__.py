@@ -1,5 +1,6 @@
 from .pointnet import PointNetCls
 from .pointnet2 import PointNet2Cls
+from .dgcnn import DGCNNCls
 
 def getModel(cfg):
 
@@ -7,6 +8,8 @@ def getModel(cfg):
         ModelClass = PointNetCls
     elif cfg.model.name == "pn2":
         ModelClass = PointNet2Cls
+    elif cfg.model.name == "dgcnn":
+        ModelClass = DGCNNCls
     else:
         raise Exception("Unknown cfg.model.name =", cfg.model.name)
 

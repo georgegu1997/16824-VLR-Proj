@@ -1,8 +1,9 @@
 import torch.nn as nn
 import torch.nn.functional as F
-from .pointnet2 import PointNetSetAbstraction
 
+from .pointnet2 import PointNetSetAbstraction
 from ppf_net.models.base import BaseModel
+
 
 class PointNet2Cls(BaseModel):
     def __init__(self, config):

@@ -5,6 +5,7 @@ k: 40
 normal_channel: ${dataset.normal}
 ppf_mode: null  # null means not computing PPF
 # loss and optimizer related
+use_sgd: False
 mat_diff_loss_scale: 0.001
 learning_rate: 0.001
 weight_decay: 1e-4
@@ -14,5 +15,5 @@ lr_decay_step: 100
 checkpoint_name: "{epoch:03d}-{train_inst_acc_epoch:.3f}-{valid_inst_acc:.3f}-{valid_cls_acc:.3f}"
 monitor: "valid_cls_acc"
 monitor_mode: "max"
-max_epochs: 100
+max_epochs: 300
 save_top_k: 5

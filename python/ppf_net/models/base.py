@@ -31,14 +31,22 @@ class BaseModel(pl.LightningModule):
         raise NotImplementedError
 
     def configure_optimizers(self):
-        optimizer = torch.optim.Adam(
-            self.parameters(), 
-            lr = self.config.learning_rate, 
-            betas=(0.9, 0.999),
-            eps=1e-08,
-            weight_decay = self.config.weight_decay,
-        )
-        scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer, milestones=[50, 80], gamma=0.1)
+        if self.config.use_sgd:
+            optimizer = torch.optim.SGD(
+                self.parameters(),
+                lr=self.config.learning_rate,
+                momentum=self.config.momentum,
+                weight_decay=self.config.weight_decay)
+            scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, self.config.max_epochs, eta_min=self.config.learning_rate)
+        else:
+            optimizer = torch.optim.Adam(
+                self.parameters(), 
+                lr=self.config.learning_rate, 
+                betas=(0.9, 0.999),
+                eps=1e-08,
+                weight_decay=self.config.weight_decay,
+            )
+            scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=100, gamma=0.5)
         return [optimizer], [scheduler]
 
     def training_step(self, batch, batch_idx):
