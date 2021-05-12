@@ -1,5 +1,6 @@
 import random
 import torch
+import torch.nn.functional as F
 
 
 def generate_ppf(points, ppf_mode=None):

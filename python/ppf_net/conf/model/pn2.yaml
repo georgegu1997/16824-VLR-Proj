@@ -4,7 +4,7 @@ name: "pn2"
 k: 40
 normal_channel: ${dataset.normal}
 ppf_mode: null  # null means not computing PPF
-ppf_all: True  # compute PPF on all SetAbstraction layers
+ppf_first: False  # compute PPF at the first SetAbstraction layers
 # loss and optimizer related
 learning_rate: 0.001
 weight_decay: 1e-4

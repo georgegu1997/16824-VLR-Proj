@@ -3,4 +3,5 @@ name: 'modelnet'
 data_root: "/home/qiaog/src/16824proj/data"
 num_points: 2048
 normal: True
+train_aug: False # Whether to augment the point cloud data during training time
 valid_rot: True # Whether to apply random rotation perturbation for validation dataset

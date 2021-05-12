@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from time import time
 import numpy as np
-from ppf_net.utils.ppf import generate_ppf
+from ppf_net.utils.ppf import compute_ppf, generate_ppf
 
 
 def timeit(tag, t):
@@ -106,7 +106,7 @@ def query_ball_point(radius, nsample, xyz, new_xyz):
     return group_idx
 
 
-def sample_and_group(npoint, radius, nsample, xyz, points, returnfps=False):
+def sample_and_group(npoint, radius, nsample, xyz, points, returnfps=False, ppf=False):
     """
     Input:
         npoint:
@@ -119,16 +119,30 @@ def sample_and_group(npoint, radius, nsample, xyz, points, returnfps=False):
         new_points: sampled points data, [B, npoint, nsample, 3+D]
     """
     B, N, C = xyz.shape
+    _, _, D = points.shape
     S = npoint
-    fps_idx = farthest_point_sample(xyz, npoint) # [B, npoint, C]
-    new_xyz = index_points(xyz, fps_idx)
+    fps_idx = farthest_point_sample(xyz, npoint) 
+    new_xyz = index_points(xyz, fps_idx) # [B, npoint, C]
     idx = query_ball_point(radius, nsample, xyz, new_xyz)
     grouped_xyz = index_points(xyz, idx) # [B, npoint, nsample, C]
-    grouped_xyz_norm = grouped_xyz - new_xyz.view(B, S, 1, C)
+
+    grouped_xyz_norm = grouped_xyz - new_xyz.view(B, S, 1, C) # (B, npoint, nsample, C)
 
     if points is not None:
-        grouped_points = index_points(points, idx)
+        grouped_points = index_points(points, idx) # (B, npoint, nsample, D)
         new_points = torch.cat([grouped_xyz_norm, grouped_points], dim=-1)  # [B, npoint, nsample, C+D]
+
+        if ppf:
+            # if ppf, only the PPF will be fed into the following MLP
+            # The XYZ coordinates will not be included
+            assert D == 3
+            center_xyz = new_xyz # (n, npoint, D)
+            center_feat = index_points(points, fps_idx) # (B, npoint, D)
+            center_xyzfeat = torch.cat([center_xyz, center_feat], dim=2) # (B, npoint, C+D)
+            center_xyzfeat = center_xyzfeat.reshape((B*npoint, 1, C+D)) # (B*npoint, 1, C+D)
+            point_xyzfeat = new_points.reshape((B*npoint, nsample, C+D)) # (B*npoint, nsample, C+D)
+            new_ppf = compute_ppf(center_xyzfeat, point_xyzfeat) # (B*npoint, nsample, 4)
+            new_points = new_ppf.reshape((B, npoint, nsample, 4)) # (B, npoint, nsample, 4)
     else:
         new_points = grouped_xyz_norm
 
@@ -138,7 +152,7 @@ def sample_and_group(npoint, radius, nsample, xyz, points, returnfps=False):
         return new_xyz, new_points
 
 
-def sample_and_group_all(xyz, points):
+def sample_and_group_all(xyz, points, ppf=False):
     """
     Input:
         xyz: input points position data, [B, N, 3]
